@@ -1,0 +1,32 @@
+
+fastapi
+uvicorn
+pydantic
+pydantic-settings
+sqlalchemy
+psycopg2-binary
+python-dotenv
+
+# Auth
+passlib[argon2]
+python-jose
+email-validator
+
+# RAG & NLP
+langchain==0.1.20
+langchain-community==0.0.38
+langchain-experimental==0.0.56
+chromadb
+sentence-transformers
+rank_bm25
+# PDF + Images
+unstructured
+unstructured[pdf]
+pdf2image
+pillow
+opencv-python
+requests
+mlflow
+deepeval
+ollama
+prometheus_client

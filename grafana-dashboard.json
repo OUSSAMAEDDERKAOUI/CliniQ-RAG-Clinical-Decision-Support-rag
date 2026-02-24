@@ -1,0 +1,84 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "RAG Biomedical Support - Kubernetes",
+    "tags": ["rag", "biomedical", "k8s"],
+    "timezone": "browser",
+    "refresh": "5s",
+    "time": { "from": "now-1h", "to": "now" },
+    "panels": [
+      {
+        "id": 1,
+        "title": "Total Request Rate (req/sec)",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "sum(rate(request_count_total[5m]))",
+            "legendFormat": "req/sec"
+          }
+        ],
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 }
+      },
+      {
+        "id": 2,
+        "title": "API Latency - 95th Percentile",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(request_latency_seconds_bucket[5m])) by (le))",
+            "legendFormat": "95th percentile"
+          }
+        ],
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 }
+      },
+      {
+        "id": 3,
+        "title": "Error Rate (errors/sec)",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "sum(rate(error_count_total[5m]))",
+            "legendFormat": "errors/sec"
+          }
+        ],
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 }
+      },
+      {
+        "id": 4,
+        "title": "RAG Latency - 95th Percentile",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(rag_response_latency_seconds_bucket[5m])) by (le))",
+            "legendFormat": "RAG 95%"
+          }
+        ],
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 }
+      },
+      {
+        "id": 5,
+        "title": "RAG Success Rate (req/sec)",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "sum(rate(rag_success_total[5m]))",
+            "legendFormat": "success/sec"
+          }
+        ],
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 }
+      },
+      {
+        "id": 6,
+        "title": "RAG Error Rate (req/sec)",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "sum(rate(rag_error_total[5m]))",
+            "legendFormat": "error/sec"
+          }
+        ],
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 }
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+pytest
+pytest-cov
+pytest-asyncio
+mock
+python-jose
+langchain-experimental
+deepeval

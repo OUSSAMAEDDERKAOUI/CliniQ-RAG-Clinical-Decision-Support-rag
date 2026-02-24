@@ -1,0 +1,123 @@
+
+services:
+
+
+
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow
+    container_name: rag_mlflow
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlflow_data:/mlflow
+    command: >
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri sqlite:////mlflow/mlflow.db
+      --serve-artifacts
+      --allowed-hosts "*"
+    networks:
+      - rag_network
+  
+  api:
+    build: .
+    container_name: rag_api
+    hostname: rag_api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+
+    volumes:
+      - ./data:/app/data
+      - ./:/app 
+      - hf_cache:/root/.cache/huggingface
+    networks:
+      - rag_network
+
+    depends_on:
+      chroma:
+        condition: service_started
+      db:
+        condition: service_started
+      ollama:
+        condition: service_started
+      mlflow:
+        condition: service_started
+
+    environment:
+      - CHROMA_HOST=http://chroma:8000
+      - OLLAMA_URL=http://ollama:11434/api/chat
+      - TRANSFORMERS_CACHE=/root/.cache/huggingface
+      - HF_HOME=/root/.cache/huggingface
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+
+    
+
+    restart: always
+
+
+  db:
+    image: postgres:15
+    container_name: rag_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: rag_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - rag_network
+    restart: always
+
+
+  chroma:
+    image: ghcr.io/chroma-core/chroma:latest
+    container_name: rag_chroma
+    ports:
+      - "8001:8000"
+    volumes:
+      - chroma_data:/chroma
+    networks:
+      - rag_network
+    restart: always
+
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: rag_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - rag_network
+    restart: always
+
+
+  adminer:
+    image: adminer
+    container_name: rag-adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - rag_network
+
+ 
+  
+
+networks:
+  rag_network:
+    driver: bridge
+
+
+volumes:
+  postgres_data:
+  chroma_data:
+  ollama_data:
+  hf_cache:
