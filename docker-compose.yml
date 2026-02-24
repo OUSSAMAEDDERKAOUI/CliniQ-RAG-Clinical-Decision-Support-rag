@@ -1,9 +1,6 @@
 
 services:
 
-
-
-
   mlflow:
     image: ghcr.io/mlflow/mlflow
     container_name: rag_mlflow
