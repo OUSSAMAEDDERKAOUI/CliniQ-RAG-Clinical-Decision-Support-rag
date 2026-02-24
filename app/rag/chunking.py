@@ -1,93 +1,11 @@
-# from langchain_experimental.text_splitter import SemanticChunker
-# from langchain_community.embeddings import HuggingFaceEmbeddings
 
-# def semantic_chunking(docs):
-
-#     embeddings = HuggingFaceEmbeddings(
-#         model_name="all-MiniLM-L6-v2"
-#     )
-
-#     splitter = SemanticChunker(embeddings)
-
-#     chunks = []
-
-#     for d in docs:
-#         split = splitter.split_text(d["text"])
-
-#         for s in split:
-#             chunks.append({
-#                 "text": s,
-#                 "metadata": d["metadata"]
-#             })
-
-#     return chunks
-
-
-# def semantic_chunking(docs):
-#     embeddings = HuggingFaceEmbeddings(
-#         model_name="all-MiniLM-L6-v2"
-#     )
-
-#     splitter = SemanticChunker(embeddings)
-
-#     chunks = []
-
-#     for d in docs:
-#         split_texts = splitter.split_text(d["text"])
-#         for s in split_texts:
-#             chunks.append({
-#                 "text": s,
-#                 "metadata": d["metadata"]
-#             })
-
-#     return chunks
-
-# from langchain.text_splitter import RecursiveCharacterTextSplitter
-# from langchain_experimental.text_splitter import SemanticChunker
-# from langchain_community.embeddings import HuggingFaceEmbeddings
-
-# def hybrid_chunking(docs):
-
-#     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-
-#     semantic = SemanticChunker(embeddings)
-
-#     recursive = RecursiveCharacterTextSplitter(
-#         chunk_size=500,
-#         chunk_overlap=100
-#     )
-
-#     chunks = []
-
-#     for d in docs:
-#         text = d["text"]
-
-#         # 1) Découpage sémantique
-#         semantic_splits = semantic.split_text(text)
-
-#         for part in semantic_splits:
-
-#             # 2) Redécouper si trop grand
-#             if len(part) > 700:
-#                 sub = recursive.split_text(part)
-#             else:
-#                 sub = [part]
-
-#             for s in sub:
-#                 chunks.append({
-#                     "text": s,
-#                     "metadata": d["metadata"]
-#                 })
-
-#     return chunks
 
 from langchain_experimental.text_splitter import SemanticChunker
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from app.monitoring.mlflow_logger import  log_chunking_config
 
-# Charger une seule fois
-# EMBEDDINGS = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+
 EMBEDDINGS = HuggingFaceEmbeddings(
     model_name="BAAI/bge-base-en-v1.5"
 )
@@ -147,24 +65,6 @@ def hybrid_chunking(docs):
     print(f"[CHUNKING] Total chunks générés : {len(chunks)}")
 
 
-
-    # log_chunking_config({
-    #     "chunking_strategy": "hybrid",
-    #     "semantic_chunker": "SemanticChunker",
-    #     "embedding_model_chunking": "all-MiniLM-L6-v2",
-
-    #     "recursive_chunk_size": 600,
-    #     "recursive_overlap": 120,
-
-    #     "min_chunk_length": 80,
-    #     "max_semantic_length": 900,
-
-    #     "text_cleaning": True,
-
-    #     # === EMBEDDING ===
-    #     "embedding_model": "all-MiniLM-L6-v2",
-    #     "embedding_dimension": 384
-    # })
     
     log_chunking_config({
     "chunking_strategy": "hybrid",

@@ -3,7 +3,7 @@ services:
 
   mlflow:
     image: ghcr.io/mlflow/mlflow
-    container_name: rag_mlflow
+    container_name: rag_CliniQ_mlflow
     ports:
       - "5000:5000"
     volumes:
@@ -20,7 +20,7 @@ services:
   
   api:
     build: .
-    container_name: rag_api
+    container_name: rag_CliniQ_api
     hostname: rag_api
     ports:
       - "8000:8000"
@@ -58,7 +58,7 @@ services:
 
   db:
     image: postgres:15
-    container_name: rag_db
+    container_name: rag_CliniQ_db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -74,7 +74,7 @@ services:
 
   chroma:
     image: ghcr.io/chroma-core/chroma:latest
-    container_name: rag_chroma
+    container_name: rag_CliniQ_chroma
     ports:
       - "8001:8000"
     volumes:
@@ -86,7 +86,7 @@ services:
 
   ollama:
     image: ollama/ollama:latest
-    container_name: rag_ollama
+    container_name: rag_CliniQ_ollama
     ports:
       - "11434:11434"
     volumes:
@@ -98,7 +98,7 @@ services:
 
   adminer:
     image: adminer
-    container_name: rag-adminer
+    container_name: rag_CliniQ-adminer
     restart: always
     ports:
       - 8080:8080

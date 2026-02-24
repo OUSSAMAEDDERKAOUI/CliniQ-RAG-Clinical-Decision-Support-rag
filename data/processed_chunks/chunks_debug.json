@@ -1,0 +1,112 @@
+[
+    {
+        "text": "— CD : Continuous Delivery ou Continuous Deployment (Livraison Conti- nue ou Déploiement Continu)",
+        "metadata": {
+            "type": "ListItem",
+            "page": 1,
+            "doc_id": 3,
+            "semantic_part": 0,
+            "sub_part": 0,
+            "length": 97
+        }
+    },
+    {
+        "text": "Le CI/CD est un ensemble de pratiques et d’outils permettant d’automa- tiser le développement, les tests et le déploiement des applications logicielles.",
+        "metadata": {
+            "type": "NarrativeText",
+            "page": 1,
+            "doc_id": 4,
+            "semantic_part": 0,
+            "sub_part": 0,
+            "length": 152
+        }
+    },
+    {
+        "text": "Dans un projet logiciel moderne, plusieurs développeurs travaillent simul- tanément sur le même code.",
+        "metadata": {
+            "type": "NarrativeText",
+            "page": 1,
+            "doc_id": 5,
+            "semantic_part": 0,
+            "sub_part": 0,
+            "length": 101
+        }
+    },
+    {
+        "text": "— Continuous Delivery : Le code est toujours prêt à être déployé, mais le déploiement final est manuel.",
+        "metadata": {
+            "type": "ListItem",
+            "page": 2,
+            "doc_id": 32,
+            "semantic_part": 0,
+            "sub_part": 0,
+            "length": 103
+        }
+    },
+    {
+        "text": "— Continuous Deployment : Le déploiement en production est totale- ment automatique.",
+        "metadata": {
+            "type": "ListItem",
+            "page": 2,
+            "doc_id": 33,
+            "semantic_part": 0,
+            "sub_part": 0,
+            "length": 84
+        }
+    },
+    {
+        "text": "— GitHub Actions — GitLab CI/CD — Jenkins — CircleCI — Azure DevOps — Travis CI Pour les conteneurs et le déploiement : — Docker — Kubernetes — Ansible",
+        "metadata": {
+            "type": "NarrativeText",
+            "page": 2,
+            "doc_id": 39,
+            "semantic_part": 0,
+            "sub_part": 0,
+            "length": 151
+        }
+    },
+    {
+        "text": "Le CI/CD est aussi très important en Machine Learning. On parle souvent de : — CI/CD pour le code — CI/CD pour les données — CI/CD pour les modèles Exemple de pipeline CI/CD ML :",
+        "metadata": {
+            "type": "NarrativeText",
+            "page": 3,
+            "doc_id": 49,
+            "semantic_part": 0,
+            "sub_part": 0,
+            "length": 178
+        }
+    },
+    {
+        "text": "Les principaux avantages sont : — gain de temps, — meilleure qualité du code, — déploiements rapides et fiables, — réduction des bugs en production, — processus entièrement automatisé.",
+        "metadata": {
+            "type": "NarrativeText",
+            "page": 4,
+            "doc_id": 55,
+            "semantic_part": 0,
+            "sub_part": 0,
+            "length": 184
+        }
+    },
+    {
+        "text": "Le CI/CD est aujourd’hui une pratique essentielle du développement lo- giciel moderne.",
+        "metadata": {
+            "type": "NarrativeText",
+            "page": 4,
+            "doc_id": 56,
+            "semantic_part": 0,
+            "sub_part": 0,
+            "length": 86
+        }
+    },
+    {
+        "text": "Toute équipe de développement professionnelle utilise aujourd’hui une chaîne CI/CD.",
+        "metadata": {
+            "type": "NarrativeText",
+            "page": 4,
+            "doc_id": 61,
+            "semantic_part": 0,
+            "sub_part": 0,
+            "length": 83
+        }
+    }
+]

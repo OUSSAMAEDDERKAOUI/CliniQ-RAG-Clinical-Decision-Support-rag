@@ -5,7 +5,7 @@ from prometheus_client import Counter, Histogram, generate_latest
 from app.db.init_db import init_db
 from app.api.v1 import auth
 from app.api.v1.rag_router import router as rag_router
-from app.api.v1.rag_router import ask_question
+# from app.api.v1.rag_router import ask_question
 
 
 app = FastAPI(title="RAG Biomedical Support")
