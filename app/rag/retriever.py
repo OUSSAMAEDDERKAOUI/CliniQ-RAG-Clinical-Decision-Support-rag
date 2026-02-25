@@ -87,7 +87,6 @@ class HybridRetriever(BaseRetriever):
         final_docs = [doc for doc, _ in ranked[: self.top_k]]
         final_scores = [score for _, score in ranked[: self.top_k]]
     
-        # ---- LOGGING MLflow ----
         if mlflow.active_run():
             log_retrieval_query(query, final_docs, final_scores)
     
@@ -127,7 +126,6 @@ def get_retriever():
         }
     )
 
-    # BM25
     docs = load_chunks_from_chroma()
     documents = [
         Document(page_content=d["text"], metadata=d["metadata"])
@@ -149,34 +147,9 @@ def get_retriever():
     top_k=6
     )
 
-    # Log config une seule fois
     if mlflow.active_run():
         log_retriever_config()
 
     return retriever
 
 
-
-
-# def get_retriever():
-
-
-#     vectorstore = get_vectorstore()
-
-#     vector_retriever = vectorstore.as_retriever(
-#         search_kwargs={"k": 6}
-#     )
-
-#     docs = load_chunks_from_chroma()
-
-#     texts = [d["text"] for d in docs]
-
-#     bm25_retriever = BM25Retriever.from_texts(texts)
-#     bm25_retriever.k = 6
-
-#     hybrid_retriever = EnsembleRetriever(
-#         retrievers=[vector_retriever, bm25_retriever],
-#         weights=[0.6, 0.4]
-#     )
-
-#     return hybrid_retriever

@@ -8,7 +8,7 @@ with start_rag_run("retrieval","HybridRetriever_dense_bm25"):
 
 print(" Retriever prêt")
 
-query = "Qu'est-ce que  Outils utilisés en CI/CD  ?"
+query = " Comment diagnostiquer et traiter une gêne respiratoire due à un encombrement aux deux temps respiratoires ?"
 
 print(f"\n Recherche pour : {query}\n")
 
