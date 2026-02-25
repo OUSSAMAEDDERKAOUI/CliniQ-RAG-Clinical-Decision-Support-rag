@@ -37,7 +37,7 @@ def build_pipeline(pdf_path):
         # mlflow.log_param("nb_chunks", len(chunks))
 
     return {
-        "documents": len(grouped_docs),
+        "documents": len(docs),
         "nb_chunks": len(chunks),
         "chunks": chunks[:10]
     }

@@ -10,9 +10,9 @@ def reset_chroma():
 
     try:
         client.delete_collection("biomedical")
-        print("✅ Collection supprimée avec succès")
+        print(" Collection supprimée avec succès")
     except:
-        print("⚠️ La collection n'existe pas encore")
+        print(" La collection n'existe pas encore")
 
 
 def store_chunks(chunks):

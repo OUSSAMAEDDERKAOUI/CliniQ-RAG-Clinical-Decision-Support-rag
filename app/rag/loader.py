@@ -1,71 +1,71 @@
 
-# from unstructured.partition.pdf import partition_pdf
-# from app.rag.vision import describe_image
-# from collections import defaultdict
+from unstructured.partition.pdf import partition_pdf
+from app.rag.vision import describe_image
+from collections import defaultdict
 
-# def load_pdf(path):
-#     elements = partition_pdf(
-#         filename=path,
-#         strategy="hi_res",
-#         extract_images_in_pdf=True,
-#         infer_table_structure=True
-#     )
+def load_pdf(path):
+    elements = partition_pdf(
+        filename=path,
+        strategy="hi_res",
+        extract_images_in_pdf=True,
+        infer_table_structure=True
+    )
 
-#     docs = []
+    docs = []
 
-#     for el in elements:
-#         text = el.text or ""
-#         category = el.category
+    for el in elements:
+        text = el.text or ""
+        category = el.category
 
-#         if len(text.strip()) < 15:
-#             continue
+        if len(text.strip()) < 15:
+            continue
 
-#         if category in ["Title", "UncategorizedText"]:
-#             continue
+        if category in ["Title", "UncategorizedText"]:
+            continue
 
-#         if category == "Table":
-#             lines = [line.strip() for line in text.split("\n") if line.strip()]
-#             for line in lines:
-#                 docs.append({
-#                     "text": f"TABLE ROW:\n{line}",
-#                     "metadata": {
-#                         "type": category,
-#                         "page": el.metadata.page_number
-#                     }
-#                 })
-#             continue
+        if category == "Table":
+            lines = [line.strip() for line in text.split("\n") if line.strip()]
+            for line in lines:
+                docs.append({
+                    "text": f"TABLE ROW:\n{line}",
+                    "metadata": {
+                        "type": category,
+                        "page": el.metadata.page_number
+                    }
+                })
+            continue
 
-#         if category == "Image":
-#             # image_path = el.metadata.image_path
-#             # if image_path:
-#             #     description = describe_image(image_path)
-#             #     text = f"IMAGE DESCRIPTION:\n{description}"
-#             continue
+        if category == "Image":
+            # image_path = el.metadata.image_path
+            # if image_path:
+            #     description = describe_image(image_path)
+            #     text = f"IMAGE DESCRIPTION:\n{description}"
+            continue
 
-#         docs.append({
-#             "text": text,
-#             "metadata": {
-#                 "type": category,
-#                 "page": el.metadata.page_number
-#             }
-#         })
+        docs.append({
+            "text": text,
+            "metadata": {
+                "type": category,
+                "page": el.metadata.page_number
+            }
+        })
 
-#     return docs
+    return docs
 
 
 
-# def group_docs_by_page(docs):
-#     texts_by_page = defaultdict(list)
-#     for d in docs:
-#         page = d["metadata"]["page"]
-#         texts_by_page[page].append(d["text"])
-#     grouped_docs = []
-#     for page, texts in texts_by_page.items():
-#         grouped_docs.append({
-#             "text": " ".join(texts),
-#             "metadata": {"page": page}
-#         })
-#     return grouped_docs
+def group_docs_by_page(docs):
+    texts_by_page = defaultdict(list)
+    for d in docs:
+        page = d["metadata"]["page"]
+        texts_by_page[page].append(d["text"])
+    grouped_docs = []
+    for page, texts in texts_by_page.items():
+        grouped_docs.append({
+            "text": " ".join(texts),
+            "metadata": {"page": page}
+        })
+    return grouped_docs
 
 
 
@@ -151,3 +151,4 @@ def load_pdf(path):
         })
 
     return docs
+
