@@ -13,24 +13,37 @@ from app.monitoring.mlflow_logger import (
     start_retrieval_timer,
     end_retrieval_timer
 )
+from functools import lru_cache
+from langchain.schema import BaseRetriever, Document
+from typing import List
+from pydantic import Field
+import hashlib
+
+from langchain.schema import BaseRetriever, Document
+from typing import List
+
+class EmptyRetriever(BaseRetriever):
+    def _get_relevant_documents(self, query: str) -> List[Document]:
+        return []
 
 
+@lru_cache(maxsize=1)
 def get_vectorstore():
-    embeddings = get_embeddings()
-
+    emb = get_embeddings()  
     client = chromadb.HttpClient(host="chroma", port=8000)
+    client.get_or_create_collection(name="biomedical")
 
-    vectorstore = Chroma(
+    return Chroma(
         client=client,
         collection_name="biomedical",
-        embedding_function=get_embeddings()
+        embedding_function=emb
     )
 
-    return vectorstore
 
 
 
 
+@lru_cache(maxsize=1)
 def load_chunks_from_chroma():
 
 
@@ -48,10 +61,7 @@ def load_chunks_from_chroma():
 
     return docs
 
-from langchain.schema import BaseRetriever, Document
-from typing import List
-from pydantic import Field
-import hashlib
+
 
 
 class HybridRetriever(BaseRetriever):
@@ -99,8 +109,8 @@ class HybridRetriever(BaseRetriever):
 
         start = start_retrieval_timer()
     
-        dense_docs = self.dense_retriever.get_relevant_documents(query)
-        sparse_docs = self.bm25_retriever.get_relevant_documents(query)
+        dense_docs = self.dense_retriever.invoke(query)
+        sparse_docs = self.bm25_retriever.invoke(query)
     
         merged = dense_docs + sparse_docs
         deduped = self._deduplicate(merged)
@@ -112,7 +122,12 @@ class HybridRetriever(BaseRetriever):
         return results
 
 
+@lru_cache(maxsize=1)
+def get_reranker():
+    return CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
 
+
+@lru_cache(maxsize=1)
 def get_retriever():
     
     vectorstore = get_vectorstore()
@@ -131,13 +146,16 @@ def get_retriever():
         Document(page_content=d["text"], metadata=d["metadata"])
         for d in docs
     ]
+    docs = load_chunks_from_chroma()
+    if not docs:
+        bm25_retriever = EmptyRetriever()
+    else:
+        bm25_retriever = BM25Retriever.from_documents(documents)
+        bm25_retriever.k = 3
 
-    bm25_retriever = BM25Retriever.from_documents(documents)
-    bm25_retriever.k = 1
 
-    reranker = CrossEncoder(
-        "cross-encoder/ms-marco-MiniLM-L-6-v2"
-    )
+
+    reranker=get_reranker()
 
 
     retriever = HybridRetriever(

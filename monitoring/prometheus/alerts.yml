@@ -1,0 +1,81 @@
+groups:
+- name: rag_alerts
+  rules:
+
+  # 1) API down
+  - alert: RAGAPIDown
+    expr: up{job="rag_api"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "RAG API down"
+      description: "Prometheus n'arrive plus à scrapper /metrics (job=rag_api) depuis 1 minute."
+
+  # 2) Latence RAG p95 > 8s
+  - alert: RAGHighLatencyP95
+    expr: |
+      histogram_quantile(
+        0.95,
+        sum(rate(request_latency_seconds_bucket{endpoint!="/metrics"}[5m])) by (le)
+      ) > 8
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Latence RAG p95 trop élevée"
+      description: "La latence p95 dépasse 8s depuis 5 minutes."
+
+  # 3) Erreurs > 5%
+  - alert: RAGHighErrorRate
+    expr: |
+      (sum(rate(error_count_total[5m])) / sum(rate(request_count_total{endpoint!="/metrics"}[5m]))) > 0.05
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Taux d'erreur élevé"
+      description: "Plus de 5% d'erreurs sur 5 minutes."
+
+- name: infra_alerts
+  rules:
+
+  # 4) CPU container Ollama > 3 cores (exemple)
+  - alert: OllamaHighCPU
+    expr: rate(container_cpu_usage_seconds_total{name="rag_CliniQ_ollama", image!=""}[1m]) > 3
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Ollama CPU élevé"
+      description: "Ollama consomme > 3 cores CPU depuis 5 minutes."
+
+  # 5) RAM container Ollama > 10GB (exemple)
+  - alert: OllamaHighMemory
+    expr: (container_memory_usage_bytes{name="rag_CliniQ_ollama", image!=""} / 1024 / 1024 / 1024) > 10
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Ollama RAM élevée"
+      description: "Ollama utilise > 10GB RAM depuis 5 minutes."
+
+  # 6) Host/VM RAM > 90%
+  - alert: HostHighMemory
+    expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) > 0.90
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      summary: "RAM host/VM élevée"
+      description: "RAM > 90% depuis 10 minutes."
+
+  # 7) Host/VM CPU > 90%
+  - alert: HostHighCPU
+    expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 90
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      summary: "CPU host/VM élevé"
+      description: "CPU > 90% depuis 10 minutes."

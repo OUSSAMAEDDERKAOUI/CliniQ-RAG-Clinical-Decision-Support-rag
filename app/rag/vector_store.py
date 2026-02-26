@@ -22,7 +22,7 @@ def store_chunks(chunks):
         host=os.getenv("CHROMA_HOST")
     )
 
-
+    
     vectorstore = Chroma(
         client=client,
         collection_name="biomedical",

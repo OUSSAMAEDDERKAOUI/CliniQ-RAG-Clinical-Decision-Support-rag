@@ -1,23 +1,28 @@
-
 import time
-from fastapi import FastAPI, Request, Response, HTTPException
+from fastapi import FastAPI, Request, Response
 from prometheus_client import Counter, Histogram, generate_latest
+
 from app.db.init_db import init_db
 from app.api.v1 import auth
 from app.api.v1.rag_router import router as rag_router
-# from app.api.v1.rag_router import ask_question
 
+from app.rag.retriever import get_reranker  
+from app.rag.qa_chain import get_qa_chain
 
 app = FastAPI(title="RAG Biomedical Support")
-
 
 REQUEST_COUNT = Counter("request_count_total", "Total API requests", ["method", "endpoint", "http_status"])
 REQUEST_LATENCY = Histogram("request_latency_seconds", "Request latency in seconds", ["method", "endpoint"])
 ERROR_COUNT = Counter("error_count_total", "Total number of errors", ["method", "endpoint", "http_status"])
 
-RAG_RESPONSE_LATENCY = Histogram("rag_response_latency_seconds", "Latency of RAG responses")
-RAG_RESPONSE_SUCCESS = Counter("rag_success_total", "Number of successful RAG responses")
-RAG_RESPONSE_ERROR = Counter("rag_error_total", "Number of failed RAG responses")
+
+@app.on_event("startup")
+def on_startup():
+    init_db()
+
+    get_reranker()
+
+    get_qa_chain()
 
 
 @app.middleware("http")
@@ -42,11 +47,6 @@ async def metrics_middleware(request: Request, call_next):
 @app.get("/metrics")
 async def metrics():
     return Response(generate_latest(), media_type="text/plain")
-
-
-@app.on_event("startup")
-def startup():
-    init_db()
 
 
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
