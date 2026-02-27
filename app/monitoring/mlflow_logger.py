@@ -48,8 +48,8 @@ def log_llm_params(params: dict):
 
 
 def log_answer(question, answer):
-    mlflow.log_text(question, "question.txt")
-    mlflow.log_text(answer, "answer.txt")
+    mlflow.log_text(question, "réponses & contextes/question.txt")
+    mlflow.log_text(answer, "réponses & contextes/answer.txt")
 
 
 def end_run():
@@ -88,7 +88,7 @@ def log_retrieval_query(query: str, docs, scores):
 
     context_text = "\n\n----\n\n".join([d.page_content for d in docs])
 
-    mlflow.log_text(context_text, "retrieved_context.txt")
+    mlflow.log_text(context_text, "réponses & contextes/retrieved_context.txt")
 
 
 def start_retrieval_timer():
@@ -110,15 +110,15 @@ def log_rag_pipeline_artifacts(
     llm_config: dict | None = None,
     extra: dict | None = None,
 ):
-    mlflow.log_text(prompt_template, "rag/prompt_template.txt")
-    mlflow.log_dict(indexing_hybrid_chunking_config, "rag/indexing_hybrid_chunking_config.json")
-    mlflow.log_dict(retriever_config, "rag/retriever_config.json")
+    mlflow.log_text(prompt_template, "pipeline RAG/prompt_template.txt")
+    mlflow.log_dict(indexing_hybrid_chunking_config, "pipeline RAG/indexing_hybrid_chunking_config.json")
+    mlflow.log_dict(retriever_config, "pipeline RAG/retriever_config.json")
 
     if chunking_config:
-        mlflow.log_dict(chunking_config, "rag/chunking_config.json")
+        mlflow.log_dict(chunking_config, "pipeline RAG/chunking_config.json")
 
     if llm_config:
-        mlflow.log_dict(llm_config, "rag/llm_config.json")
+        mlflow.log_dict(llm_config, "pipeline RAG/llm_config.json")
 
     if extra:
-        mlflow.log_dict(extra, "rag/extra.json")
+        mlflow.log_dict(extra, "pipeline RAG/extra.json")

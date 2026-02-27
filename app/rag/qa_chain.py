@@ -34,6 +34,16 @@ def get_qa_chain():
         return_source_documents=True  
     )
 
+            
+
+
+        
+
+
+
+    return qa_chain
+def log_pipeline_to_mlflow():
+    
     if mlflow.active_run():
         log_llm_params({
             "model": "mistral:latest",
@@ -71,11 +81,4 @@ def get_qa_chain():
                 "top_k": 10,
                 "top_p": 0.9
             }
-            
-
-
         )
-
-
-
-    return qa_chain
