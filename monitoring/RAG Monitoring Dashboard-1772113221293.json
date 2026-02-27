@@ -244,6 +244,44 @@
         }
       ],
       "fieldConfig": { "defaults": { "unit": "MBs" } }
-    }
+    },
+    {
+  "type": "row",
+  "title": "🚨 ALERTS",
+  "gridPos": { "x": 0, "y": 47, "w": 24, "h": 1 },
+  "collapsed": false
+},
+{
+  "type": "stat",
+  "title": "FIRING alerts (count)",
+  "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+  "gridPos": { "x": 0, "y": 48, "w": 6, "h": 6 },
+  "targets": [{ "expr": "count(ALERTS{alertstate=\"firing\"})", "refId": "A" }]
+},
+{
+  "type": "stat",
+  "title": "PENDING alerts (count)",
+  "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+  "gridPos": { "x": 6, "y": 48, "w": 6, "h": 6 },
+  "targets": [{ "expr": "count(ALERTS{alertstate=\"pending\"})", "refId": "A" }]
+},
+{
+  "type": "table",
+  "title": "FIRING alerts (table)",
+  "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+  "gridPos": { "x": 12, "y": 48, "w": 12, "h": 10 },
+  "targets": [{ "expr": "ALERTS{alertstate=\"firing\"}", "refId": "A", "format": "table", "instant": true }]
+},
+{
+  "type": "alertlist",
+  "title": "Alert List (Prometheus)",
+  "gridPos": { "x": 0, "y": 54, "w": 12, "h": 10 },
+  "options": { "showInstances": true, "showAlertsWithNoData": true, "show": "current", "sortOrder": 1 }
+}
+
   ]
 }
+
+
+
+

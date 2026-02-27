@@ -4,7 +4,7 @@ groups:
 
   # 1) API down
   - alert: RAGAPIDown
-    expr: up{job="rag_api"} == 0
+    expr: up{job="api"} == 0
     for: 1m
     labels:
       severity: critical

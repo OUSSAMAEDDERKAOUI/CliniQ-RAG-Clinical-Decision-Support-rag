@@ -40,7 +40,6 @@ async def metrics_middleware(request: Request, call_next):
 
     if response.status_code >= 400:
         ERROR_COUNT.labels(method=method, endpoint=endpoint, http_status=status).inc()
-
     return response
 
 
