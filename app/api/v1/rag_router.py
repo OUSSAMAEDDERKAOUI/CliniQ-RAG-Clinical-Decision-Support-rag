@@ -53,10 +53,6 @@ async def ask(data: QuestionRequest):
 
 
 
-
-
-
-
 @router.get("/chunks")
 def get_all_chunks():
 
