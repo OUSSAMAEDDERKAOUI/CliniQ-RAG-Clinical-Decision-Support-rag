@@ -4,7 +4,7 @@ from app.services.rag_service import ask_question
 from app.rag.retriever import get_vectorstore
 from pydantic import BaseModel
 import mlflow
-from app.monitoring.mlflow_logger import start_rag_run
+from app.monitoring.mlflow_logger import start_rag_run,log_llm_params
 
 from app.monitoring.mlflow_logger import (
     log_retriever_config,
@@ -70,6 +70,14 @@ def get_all_chunks():
             "metadata": data["metadatas"][i]
         })
 
+    with start_rag_run("test","testo_testa"):
+        if mlflow.active_run():
+            log_llm_params({
+                "model": "mistral:latest",
+                "temperature": 0,
+                "top_k": 10,
+                "top_p": 0.9
+            })
     return {
         "total": len(results),
         "chunks": results

@@ -37,7 +37,7 @@ def ask_question(question: str):
             answer_text,
             contexts_text,
             llm_model=local_llm_model
-        )
+        )  
 
     return {
         "question": question,

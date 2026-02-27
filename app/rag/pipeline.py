@@ -19,9 +19,6 @@ def save_chunks_debug(chunks):
 def build_pipeline(pdf_path):
 
    
-
-
-
     with start_rag_run("indexing ","hybrid_chunking"):
 
         reset_chroma()
@@ -33,8 +30,8 @@ def build_pipeline(pdf_path):
         save_chunks_debug(chunks)
         store_chunks(chunks)
 
-        # mlflow.log_param("nb_documents", len(grouped_docs))
-        # mlflow.log_param("nb_chunks", len(chunks))
+        mlflow.log_param("nb_documents", len(docs))
+        mlflow.log_param("nb_chunks", len(chunks))
 
     return {
         "documents": len(docs),

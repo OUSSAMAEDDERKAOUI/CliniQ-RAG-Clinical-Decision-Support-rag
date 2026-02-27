@@ -4,9 +4,10 @@ from langchain_community.llms import Ollama
 from app.rag.retriever import get_retriever
 import os
 from langchain.prompts import PromptTemplate
-from app.monitoring.mlflow_logger import log_llm_params
+from app.monitoring.mlflow_logger import log_llm_params,log_rag_pipeline_artifacts
 import mlflow
 from functools import lru_cache
+from app.rag.prompt import RESPONSE_GENERATION_PROMPT
 
 
 @lru_cache(maxsize=1)
@@ -20,30 +21,8 @@ def get_qa_chain():
         base_url="http://ollama:11434"
     )
 
-
-   
-    template =     """
-            Tu es un assistant technique spécialisé dans la maintenance d'équipements biomédicaux. 
-            Ton unique mission est d'extraire des informations précises à partir des MANUELS fournis.
-
-            ### CONTEXTE DES MANUELS :
-            {context}
-
-            ### RÈGLES STRICTES :
-            
-Zéro Hallucination : Si l'information n'est pas explicitement écrite dans le texte ci-dessus, réponds exactement : "Je ne trouve pas l'information dans les manuels disponibles".
-Fidélité Technique : Ne reformule pas les codes d'erreur ou les valeurs de pression/température. Utilise le langage exact du manuel.
-Isolation de Connaissance : Ne réponds pas en utilisant tes propres connaissances générales sur le sujet. Si le manuel est silencieux, tu es silencieux.
-Priorité au Contexte : Si l'utilisateur demande une procédure non décrite ici, refuse d'y répondre.
-
-            ### QUESTION DE L'UTILISATEUR :
-            {question}
-
-            RÉPONSE (en français) :
-            """
-
     prompt = PromptTemplate(
-        template=template,
+        template=RESPONSE_GENERATION_PROMPT,
         input_variables=["context", "question"]
     )
 
@@ -62,5 +41,41 @@ Priorité au Contexte : Si l'utilisateur demande une procédure non décrite ici
             "top_k": 10,
             "top_p": 0.9
         })
+
+        log_rag_pipeline_artifacts(
+            prompt_template=RESPONSE_GENERATION_PROMPT,
+            indexing_hybrid_chunking_config={
+                "chunking_strategy": "hybrid",
+                "semantic_chunker": "SemanticChunker",
+                "embedding_model_chunking": "BAAI/bge-base-en-v1.5",
+
+                "recursive_chunk_size": 600,
+                "recursive_overlap": 120,
+
+                "min_chunk_length": 80,
+                "max_semantic_length": 900,
+
+                "text_cleaning": True,
+            },
+            retriever_config={
+                "vector_db": "chroma",
+                "collection_name": "CliniQ _rag",
+                "dense": {"type": "mmr", "k": 6, "fetch_k": 20, "lambda_mult": 0.8},
+                "bm25_k": 2,
+                "reranker_model": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+                "top_k": 6,
+            },
+            llm_config={
+                "model": "mistral:latest",
+                "temperature": 0,
+                "top_k": 10,
+                "top_p": 0.9
+            }
+            
+
+
+        )
+
+
 
     return qa_chain
