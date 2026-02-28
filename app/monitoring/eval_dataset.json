@@ -1,0 +1,22 @@
+[
+    {
+        "question": "Quelle est la cause la plus fréquente de la diarrhée chez l’enfant ?",
+        "expected_answer": "La diarrhée est le plus souvent due à une infection virale du tube digestif."
+    },
+    {
+        "question": "À partir de quelle température parle-t-on de fièvre chez l’enfant ?",
+        "expected_answer": "On parle de fièvre pour une température rectale supérieure ou égale à 38°C."
+    },
+    {
+        "question": "Quel médicament est recommandé en première intention pour traiter la fièvre chez l’enfant ?",
+        "expected_answer": "Le paracétamol est recommandé en première intention."
+    },
+    {
+        "question": "Quelle est la durée maximale de survie du sarcopte responsable de la gale en dehors de la peau ?",
+        "expected_answer": "La survie maximale est de 48 heures en dehors des cellules de l’épiderme."
+    },
+    {
+        "question": "Quel est le traitement antibiotique recommandé pour une otite moyenne aiguë chez l'enfant ?",
+        "expected_answer": "Le traitement recommandé est l'amoxicilline 80mg/kg/j en 3 prises par jour pendant 5 jours (10 jours si otorrhée, otite récidivante ou enfant de moins de 2 ans). En cas de syndrome otite-conjonctivite, utiliser l'amoxicilline-acide clavulanique 80mg/kg/jour sans dépasser 3g/jour pendant 5 jours."
+    }
+]

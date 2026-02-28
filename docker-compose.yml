@@ -50,6 +50,7 @@ services:
       - TRANSFORMERS_CACHE=/root/.cache/huggingface
       - HF_HOME=/root/.cache/huggingface
       - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - ENABLE_EVALUATION=True
 
     
 
