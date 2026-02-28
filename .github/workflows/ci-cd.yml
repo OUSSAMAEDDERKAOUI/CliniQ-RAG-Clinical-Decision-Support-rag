@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  DOCKER_IMAGE: oussamaedderkaoui/CliniQ-RAG-Clinical-Decision-Support
+  DOCKER_IMAGE: oussamaedderkaoui/cliniq-rag-clinical-decision-support
   DOCKER_TAG: ${{ github.sha }}
 
 jobs:

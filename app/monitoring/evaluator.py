@@ -120,10 +120,7 @@ from deepeval.models.llms.ollama_model import OllamaModel as DeepEvalOllamaModel
 import mlflow
 
 def evaluate_rag(question, answer, context, llm_model):
-    """
-    Évalue la réponse d'un RAG avec DeepEval en utilisant un LLM local.
-    """
-    # DeepEval exige actual_output en string et retrieval_context en liste de strings
+  
     test_case = LLMTestCase(
         input=question,
         actual_output=str(answer),
@@ -141,7 +138,6 @@ def evaluate_rag(question, answer, context, llm_model):
         metric.measure(test_case)
         results[metric.__class__.__name__] = metric.score
 
-    # Log des métriques dans MLflow
     for k, v in results.items():
         mlflow.log_metric(k, v)
 
