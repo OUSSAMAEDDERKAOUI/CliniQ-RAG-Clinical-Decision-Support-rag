@@ -22,3 +22,11 @@ def override_get_db():
         db.close()
 
 app.dependency_overrides[get_db] = override_get_db
+
+
+import pytest
+import app.rag.embeddings as emb
+
+@pytest.fixture(autouse=True)
+def clear_embedding_cache():
+    emb.get_embeddings.cache_clear()
