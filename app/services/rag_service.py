@@ -18,7 +18,10 @@ local_llm_model = DeepEvalOllamaModel(
 
 
 
-def ask_question(question: str):
+
+
+
+def ask_question(question: str, run_id: str = None,user_id:int=None):
     qa = get_qa_chain()
 
     result = qa.invoke({"query": question})
@@ -36,7 +39,8 @@ def ask_question(question: str):
             question,
             answer_text,
             contexts_text,
-            llm_model=local_llm_model
+            llm_model=local_llm_model,
+            run_id=run_id
         )  
 
     return {

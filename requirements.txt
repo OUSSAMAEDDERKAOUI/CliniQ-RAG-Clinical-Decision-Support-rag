@@ -30,3 +30,5 @@ mlflow
 deepeval
 ollama
 prometheus_client
+streamlit
+pandas

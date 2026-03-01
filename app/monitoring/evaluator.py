@@ -63,7 +63,7 @@ def load_eval_dataset() -> dict:
     return {normalize(item["question"]): item["expected_answer"] for item in data}
 
 
-def evaluate_rag(question: str, answer: str, context: list, llm_model):
+def evaluate_rag(question: str, answer: str, context: list, llm_model, run_id: str = None):
 
     eval_dataset = load_eval_dataset()
     expected_answer = eval_dataset.get(normalize(question), None)
@@ -112,14 +112,16 @@ def evaluate_rag(question: str, answer: str, context: list, llm_model):
             logger.error(f"❌ Erreur {metric.__class__.__name__} : {e}", exc_info=True)
             results[metric.__class__.__name__] = None
 
-    # ✅ Logger MLflow
-    active_run = mlflow.active_run()
-    if active_run:
-        for k_metric, v in results.items():
-            if v is not None:
-                mlflow.log_metric(k_metric, v)
-                print(f">>> MLflow logged: {k_metric} = {v}")
+    
+    if run_id:
+        with mlflow.start_run(run_id=run_id, nested=True):
+            for k_metric, v in results.items():
+                if v is not None:
+                    mlflow.log_metric(k_metric, v)
+                    print(f">>> ✅ MLflow logged: {k_metric} = {v}")
     else:
-        logger.warning("⚠️ Aucun run MLflow actif")
+        logger.warning("⚠️ Aucun run_id fourni — métriques non loguées")
+
+    return results
 
     return results

@@ -10,6 +10,6 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     role = Column(String, default="user")
-    query=relationship("Query", back_populates="user")
+    queries=relationship("Query", back_populates="user")
 
 

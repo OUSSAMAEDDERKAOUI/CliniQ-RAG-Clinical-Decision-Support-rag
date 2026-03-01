@@ -97,6 +97,24 @@ services:
     restart: always
 
 
+  streamlit:
+    build: .
+    container_name: rag_CliniQ_streamlit
+    command: streamlit run streamlit_app/Home.py --server.port=8501 --server.address=0.0.0.0
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    environment:
+      - API_BASE_URL=http://api:8000
+    volumes:
+      - ./streamlit_app:/app/streamlit_app
+    networks:
+      - rag_network
+    depends_on:
+      - api
+    restart: always
+
   adminer:
     image: adminer
     container_name: rag_CliniQ-adminer
