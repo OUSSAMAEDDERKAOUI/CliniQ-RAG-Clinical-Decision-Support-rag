@@ -22,26 +22,12 @@ if not items:
     st.stop()
 
 df = pd.DataFrame(items)
+df = df.sort_values("timestamp", ascending=False)
 
-# Renommer les colonnes selon le modèle Query
-if "created_at" in df.columns:
-    df = df.sort_values("created_at", ascending=False)
+st.subheader("❓ Questions fréquentes")
 
-st.dataframe(
-    df[["created_at", "query", "response"]].rename(columns={
-        "created_at": "Date",
-        "query": "Question",
-        "response": "Réponse"
-    }),
-    use_container_width=True
-)
-
-with st.expander("🔍 Voir le détail d'une entrée"):
-    idx = st.number_input("Index ligne (0..)", 0, len(df) - 1, 0)
-    row = df.iloc[int(idx)]
-    st.write("**📅 Date**")
-    st.write(row.get("created_at", "N/A"))
-    st.write("**❓ Question**")
-    st.write(row.get("query", "N/A"))
-    st.write("**💬 Réponse**")
-    st.write(row.get("response", "N/A"))
+for _, row in df.iterrows():
+    with st.expander(f"🔹 {row['question']}"):
+        st.markdown(f"**🕒 Date :** {row['timestamp']}")
+        st.markdown("**💬 Réponse :**")
+        st.markdown(row["answer"])

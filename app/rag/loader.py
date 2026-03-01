@@ -83,7 +83,7 @@ def table_element_to_rows(el):
             break
 
     if not html:
-        return []  # fallback possible
+        return []  
 
     dfs = pd.read_html(html)
     if not dfs:
@@ -93,7 +93,6 @@ def table_element_to_rows(el):
     df.columns = [str(c).strip() for c in df.columns]
     df = df.fillna("")
 
-    # utile si cellules vides sur certaines lignes (souvent le cas)
     df = df.replace("", pd.NA).ffill().fillna("")
 
     page = md.page_number
@@ -133,7 +132,6 @@ def load_pdf(path):
             if row_docs:
                 docs.extend(row_docs)
             else:
-                # fallback si pas de html : on garde ton ancien mode
                 lines = [line.strip() for line in text.split("\n") if line.strip()]
                 for line in lines:
                     docs.append({

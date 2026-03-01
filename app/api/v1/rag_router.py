@@ -63,7 +63,6 @@ async def ask(data: QuestionRequest, current_user: User = Depends(get_current_us
 
     return result
 
-
 @router.get("/chunks")
 def get_all_chunks():
 
@@ -80,14 +79,14 @@ def get_all_chunks():
             "metadata": data["metadatas"][i]
         })
 
-    with start_rag_run("test","testo_testa"):
-        if mlflow.active_run():
-            log_llm_params({
-                "model": "mistral:latest",
-                "temperature": 0,
-                "top_k": 10,
-                "top_p": 0.9
-            })
+    # with start_rag_run("chunks","testo_testa"):
+    #     if mlflow.active_run():
+    #         log_llm_params({
+    #             "model": "mistral:latest",
+    #             "temperature": 0,
+    #             "top_k": 10,
+    #             "top_p": 0.9
+    #         })
     return {
         "total": len(results),
         "chunks": results

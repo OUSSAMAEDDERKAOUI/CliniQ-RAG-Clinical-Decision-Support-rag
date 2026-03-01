@@ -6,7 +6,7 @@ from app.monitoring.evaluator import evaluate_rag
 from app.monitoring.mlflow_logger import log_answer
 from langchain_community.llms import Ollama
 from app.core.config import settings
-
+import mlflow
 from deepeval.models.llms.ollama_model import OllamaModel as DeepEvalOllamaModel
 
 llm = Ollama(model="mistral:latest", base_url="http://ollama:11434")
@@ -20,7 +20,7 @@ local_llm_model = DeepEvalOllamaModel(
 
 
 
-
+@mlflow.trace
 def ask_question(question: str, run_id: str = None,user_id:int=None):
     qa = get_qa_chain()
 
@@ -34,14 +34,14 @@ def ask_question(question: str, run_id: str = None,user_id:int=None):
     log_answer(question, answer_text)
 
     results = None
-    if settings.ENABLE_EVALUATION:
-        results = evaluate_rag(
-            question,
-            answer_text,
-            contexts_text,
-            llm_model=local_llm_model,
-            run_id=run_id
-        )  
+    # if settings.ENABLE_EVALUATION:
+    #     results = evaluate_rag(
+    #         question,
+    #         answer_text,
+    #         contexts_text,
+    #         llm_model=local_llm_model,
+    #         run_id=run_id
+    #     )  
 
     return {
         "question": question,
