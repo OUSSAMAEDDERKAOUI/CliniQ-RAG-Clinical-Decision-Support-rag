@@ -126,6 +126,7 @@ jobs:
       run: |
         autoflake --in-place --remove-all-unused-imports --recursive app/
         autopep8 --in-place --recursive app/
+        black app/
 
     - name: Run Code Quality tests
       run: pytest tests/test_code_quality.py -v --cov=app --cov-report=xml --maxfail=1 --disable-warnings
