@@ -9,5 +9,9 @@ def test_black():
     assert result.returncode == 0, f"Problèmes de format black:\n{result.stdout}"
 
 def test_mypy():
-    result = subprocess.run(["mypy", "app/"], capture_output=True, text=True)
+    result = subprocess.run(
+        ["mypy", "app/", "--config-file", "mypy.ini"],
+        capture_output=True,
+        text=True,
+    )
     assert result.returncode == 0, f"Problèmes mypy:\n{result.stdout}"
