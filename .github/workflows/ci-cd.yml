@@ -37,7 +37,7 @@ jobs:
     - name: Run RAG pipeline tests
       run: pytest tests/test_rag_pipeline.py -v --cov=app --cov-report=xml --maxfail=1 --disable-warnings
 
-    - name: Run RAG pipeline tests
+    - name: Run Code Quality tests
       run: pytest tests/test_code_quality.py -v --cov=app --cov-report=xml --maxfail=1 --disable-warnings
 
 
