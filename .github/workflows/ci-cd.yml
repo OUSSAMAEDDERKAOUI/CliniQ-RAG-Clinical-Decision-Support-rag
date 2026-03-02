@@ -32,14 +32,14 @@ jobs:
 
     - name: Auto-fix code style
       run: |
-        autoflake --in-place --remove-unused-imports --recursive app/
+        autoflake --in-place --remove-all-unused-imports --recursive app/
         autopep8 --in-place --recursive app/
 
     - name: Auto-fix code style
       run: |
         autoflake --in-place --remove-unused-imports --recursive app/
         autopep8 --in-place --recursive app/
-        
+
     - name: Run API tests
       run: |
         pytest tests/test_code_quality.py -v --cov=app --cov-report=xml --maxfail=1 --disable-warnings
