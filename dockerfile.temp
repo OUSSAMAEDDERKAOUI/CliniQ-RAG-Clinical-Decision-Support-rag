@@ -1,0 +1,14 @@
+FROM "test"
+# Base image    
+FROM python:3.11-slim
+WORKDIR /app
+
+copy ./requirement.txt .
+ 
+run ./requirement
+# Install dependencies
+
+RUN pip install --no-cache-dir -r ./requirement
+COPY . .
+EXPOSE 1818
+CMD [""]

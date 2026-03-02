@@ -10,9 +10,9 @@
 
 global:
   smtp_smarthost: 'smtp.gmail.com:587'
-  smtp_from: 'abdelhafid02002@gmail.com'
-  smtp_auth_username: 'abdelhafid02002@gmail.com'
-  smtp_auth_password: 'ybej hria yfbo pugr'
+  smtp_from: 'edderkaouioussama@gmail.com'
+  smtp_auth_username: 'edderkaouioussama@gmail.com'
+  smtp_auth_password: 'exuc hmgv cnhk lzvl'
   smtp_require_tls: true
 
 route:

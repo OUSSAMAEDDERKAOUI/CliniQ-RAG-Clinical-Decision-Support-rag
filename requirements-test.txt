@@ -5,3 +5,6 @@ mock
 python-jose
 langchain-experimental
 deepeval
+flake8
+black
+mypy
