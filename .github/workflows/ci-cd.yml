@@ -28,6 +28,21 @@ jobs:
         pip install -r requirements.txt
         pip install -r requirements-test.txt
         pip install pytest pytest-cov
+        pip install autopep8 autoflake
+
+    - name: Auto-fix code style
+      run: |
+        autoflake --in-place --remove-unused-imports --recursive app/
+        autopep8 --in-place --recursive app/
+
+    - name: Auto-fix code style
+      run: |
+        autoflake --in-place --remove-unused-imports --recursive app/
+        autopep8 --in-place --recursive app/
+        
+    - name: Run API tests
+      run: |
+        pytest tests/test_code_quality.py -v --cov=app --cov-report=xml --maxfail=1 --disable-warnings
     - name: Run API tests
       run: pytest tests/test_api.py -v --cov=app --cov-report=xml --maxfail=1 --disable-warnings
 

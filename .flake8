@@ -1,0 +1,6 @@
+[flake8]
+max-line-length = 200
+extend-ignore = E,W,F
+per-file-ignores =
+    app/db/base.py: F401,E402
+    app/models/*.py: F403,F405
